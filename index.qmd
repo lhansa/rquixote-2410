@@ -1,0 +1,32 @@
+---
+title: "Este es el ecosistema R que uso en el trabajo"
+subtitle: "Herramientas del mundo R que uso, que debería usar mejor y que no uso pero me gustaría"
+author: "Leonardo Hansa"
+date: 10/03/2024
+date-format: "D/M/YYYY"
+format: 
+  revealjs: 
+    theme: 
+      - simple
+      - custom.scss
+    logo: img/LogoLH.png
+    transition: slide
+    toc: true
+    toc-depth: 1
+    toc-title: "Qué te voy a contar"
+execute: 
+  eval: false
+  echo: true
+---
+
+# Una historia antes {.unnumbered .unlisted}
+
+# Contexto
+
+# Quién soy yo
+
+# `ebverse`
+
+# Shiny
+
+# Qué echo en falta

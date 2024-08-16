@@ -23,10 +23,83 @@ execute:
 
 # Contexto
 
+## Si inviertes 10 millones de publicidad, ¿de qué te sirve?
+
+- Empresa _A_ invierte dinero en publicidad. 
+    - Ve a ojo si las ventas suben o bajan un poco después. 
+- Empresa _A_ quiere saber **cuántas** ventas ha conseguido gracias a la publicidad.
+- Ebiquity le da una aproximación que obtiene con modelos estadísticos.
+
+## Esta charla no va de econometría
+
+Te contaré el papel de R en ese tipo de proyectos que hacemos.
+
+## ¿Quién hace los modelos? El consultor _B_
+
+- El consultor _B_ sabe estadística
+- El consultor _B_ sabe de publi
+- El consultor _B_ sabe Excel
+- El consultor _B_ puede saber programar
+
+Pero no se dedica a automatizar tareas ni a procesar ficheros complejos.
+
+## Las técnicas estadísticas son casi siempre las mismas de proyecto a proyecto
+
+- Modelos por paneles
+- Bayesianos
+- Con coeficientes dinámicos
+- Búsqueda de hiperparámetros
+- Transformaciones de variables
+
+## Las tareas repetitivas se desarrollan con herramientas internas
+
+El ecosistema de estas herramientas es lo que te voy a contar ahora
+
+# Planteamiento del ecosistema
+
+## Los consultores usan Excel
+
+<!-- TODO Pantallazo de XSec -->
+
+## Excel usa Visual Basic
+
+<!-- TODO Código llamada RScript.exe-->
+
+## Nuestro ecosistema consiste en varias librerías de R a las que Excel llama para cada tarea
+
+
 # Quién soy yo
 
 # `ebverse`
 
+## Cross Sectional tool
+
+- Pantallazo pestaña modelización
+- Funciones de transformación
+- Script inst/run_models
+
+## Librerías en ebverse
+
+## Qué hacemos mal
+
+- tests (algo de Venk)
+- git/github
+
 # Shiny
 
+## Excel es una herramienta que te pone muy fácil hacer las cosas mal y como te dé la gana
+
+- ampliación
+- estandarización
+
+## golem
+
+## Qué hacemos mal
+
+- renv
+- módulos (resultsexplorer)
+
+
 # Qué echo en falta
+
+## Quarto

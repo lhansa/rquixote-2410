@@ -45,7 +45,7 @@ Pero no se dedica a automatizar tareas ni a procesar ficheros complejos.
 
 ## Las técnicas estadísticas son casi siempre las mismas de proyecto a proyecto
 
-- Modelos por paneles
+- Modelos con datos de panel
 - Bayesianos
 - Con coeficientes dinámicos
 - Búsqueda de hiperparámetros
@@ -53,17 +53,73 @@ Pero no se dedica a automatizar tareas ni a procesar ficheros complejos.
 
 ## Las tareas repetitivas se desarrollan con herramientas internas
 
-El ecosistema de estas herramientas es lo que te voy a contar ahora
+El ecosistema de estas herramientas es lo que te voy a contar ahora.
 
 # Planteamiento del ecosistema
 
 ## Los consultores usan Excel
 
-<!-- TODO Pantallazo de XSec -->
+![XSec - Una plantilla en Excel](img/xsec.PNG)
+
+## En Excel especifican todo lo que R necesita saber {.smaller}
+
+| Variable                                                                                                      | CrossSection | Decomp Interval |  Decomp Group  |
+|---------------------------------------------------------------------------------------------------------------|:------------:|:---------------:|:--------------:|
+| INTERCEPT                                                                                                     | CrossSection |        10       |     1.Base     |
+| log(cci)-log(min(cci,na.rm=TRUE))                                                                             | SystemNumber |        4        |    2.Market    |
+| gmpc_giveaway_alt                                                                                             | CrossSection |        1        |     3.Promo    |
+| movav(adstock(dimret(.TV.,160,rescale=FALSE),0.3,normalize=TRUE),1)                                           | CrossSection |        1        |      4.TV      |
+| adstock(dimret(m_drms_vd_spnd,10000,rescale=FALSE),0.3,normalize=TRUE)                                        |    Region    |        1        |      4.TV      |
+| adstock(dimret(m_drms_tvspnsrshp_tvrs,170,rescale=FALSE),0.3,normalize=TRUE)                                  |    Region    |        1        |      4.TV      |
+| adstock(m_drms_rd_spnd,0.3)                                                                                   |    Region    |        1        |     5.Radio    |
+| adstock(m_drms_oh_spnd,0.8)                                                                                   | SystemNumber |        1        |  6.Other Media |
+| adstock(.Bensons_TV.,0.7,normalize=TRUE)                                                                      | CrossSection |        1        |     1.Base     |
+| lag(bh_xmas, 1)                                                                                               | CrossSection |        10       |    2.Market    |
+| bh_xmas                                                                                                       | CrossSection |        10       |    2.Market    |
+| (OBS ==   "2015-12-14")                                                                                       | CrossSection |        10       |     1.Base     |
+| ...                                                                                                           |      ...     |       ...       |       ...      |
+
 
 ## Excel usa Visual Basic
 
-<!-- TODO Código llamada RScript.exe-->
+```
+RScriptLoc = """" & gwsRSpec.Range("location_RProg").Value & "\library\ebcore\estimate_model.R"""
+
+cmdline = """" & RLocation & """" & " " & RScriptLoc & " """ & workdir & """ """ & "" & """ """ & xsec_version & "" & """ """ & bayes_model & "" & """ """ & API_KEY & "" & """ """ & API_SECRET & """"
+
+shellAndWait cmdline, True
+```
+
+## ¿Conoces `Rscript` y commandArgs()`?
+
+```{r}
+#| label: command-args
+#| eval: false
+message("Esto contiene el objeto commandArgs():")
+commandArgs()
+
+message("Y puedo utilizar sus elementos:")
+toupper(commandArgs()[6])
+```
+
+## `Rscript` lo usas desde línea de comandos
+
+```{bash}
+$ Rscript.exe ejemplo-commands.R "mensaje para editar"
+```
+
+```
+Esto contiene el objeto commandArgs():
+[1] "C:/Program Files/R/R-4.4.1/bin/x64/Rterm.exe"
+[2] "--no-echo"
+[3] "--no-restore"
+[4] "--file=ejemplo-commands.R"
+[5] "--args"
+[6] "mensaje para editar"
+Y puedo utilizar sus elementos:
+[1] "MENSAJE PARA EDITAR"
+```
+
 
 ## Nuestro ecosistema consiste en varias librerías de R a las que Excel llama para cada tarea
 
@@ -76,6 +132,37 @@ El ecosistema de estas herramientas es lo que te voy a contar ahora
 
 - Pantallazo pestaña modelización
 - Funciones de transformación
+
+## Funciones de transformación
+
+```{r}
+#| label: adstock
+adstock <- function (x, p, normalize = TRUE, reverse = FALSE) 
+{
+    if (length(p) > 1) {
+        stop("Input p to adstock must have a length of 1.")
+    }
+    if (p < 0 | p >= 1) {
+        stop("Input p to adstock must be in [0, 1)")
+    }
+    if (class(x) == "factor") {
+        warning("factor supplied to adstock function")
+        x = as.character(x)
+    }
+    x[is.na(x)] = 0
+    if (reverse == FALSE) {
+        if (normalize) {
+            x = x * (1 - p)
+        }
+        x = stats::filter(x, p, method = "recursive")
+        return(as.numeric(x))
+    }
+    else {
+        x = rev(adstock(rev(x), p, normalize))
+        return(as.numeric(x))
+    }
+}
+```
 - Script inst/run_models
 
 ## Librerías en ebverse

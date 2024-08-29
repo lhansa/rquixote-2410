@@ -19,7 +19,20 @@ execute:
   echo: true
 ---
 
+
 # Una historia antes {.unnumbered .unlisted}
+
+```{r}
+#| label: libs
+#| eval: true
+#| echo: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+theme_set(theme_bw())
+
+```
 
 # Contexto
 
@@ -82,7 +95,7 @@ El ecosistema de estas herramientas es lo que te voy a contar ahora.
 
 ## Excel usa Visual Basic
 
-```
+```{verbatim}
 RScriptLoc = """" & gwsRSpec.Range("location_RProg").Value & "\library\ebcore\estimate_model.R"""
 
 cmdline = """" & RLocation & """" & " " & RScriptLoc & " """ & workdir & """ """ & "" & """ """ & xsec_version & "" & """ """ & bayes_model & "" & """ """ & API_KEY & "" & """ """ & API_SECRET & """"
@@ -108,7 +121,7 @@ toupper(commandArgs()[6])
 $ Rscript.exe ejemplo-commands.R "mensaje para editar"
 ```
 
-```
+```{verbatim}
 Esto contiene el objeto commandArgs():
 [1] "C:/Program Files/R/R-4.4.1/bin/x64/Rterm.exe"
 [2] "--no-echo"
@@ -128,49 +141,318 @@ Y puedo utilizar sus elementos:
 
 # `ebverse`
 
-## Cross Sectional tool
+## Los proyectos de modelización giran en torno a la _Cross Sectional Tool..._
 
-- Pantallazo pestaña modelización
-- Funciones de transformación
+![XSec - Una plantilla en Excel](img/xsec.PNG)
 
-## Funciones de transformación
+## ..que necesita de R para funcionar
+
+```{r}
+#| label: ebcore-run-model
+remove(list = ls())
+necessary_packages <- c(
+  "aws.s3",
+  "data.table",
+  "devtools",
+  "dplyr",
+  "remotes",
+  "stringr",
+  "tidyr"
+)
+for (package in necessary_packages) {
+  if (length(find.package(package, quiet = TRUE)) == 0) {
+    install.packages(
+      package,
+      lib = .Library,
+      repos = "https://cloud.r-project.org"
+    )
+  }
+}
+
+suppressPackageStartupMessages(library(dplyr))
+
+
+xsec_version <- commandArgs()[8]
+if (!is.na(xsec_version)) {
+  xsec_version <- numeric_version(xsec_version)
+}
+
+
+packageStartupMessage("==============================================================")
+## Logo -----------------------------------------------
+packageStartupMessage("
+ _       _   ______   _______   _______
+  |_   _|   |        |         |
+    |_|     |_____   |_______  |
+   _| |_          |  |         |
+ _|     |_  ______|  |_______  |_______
+  ")
+if (length(find.package("XSEXCELR", quiet = TRUE)) != 0) {
+  packageStartupMessage(paste0("Package ", "v.", packageVersion("XSEXCELR")))
+}
+
+packageStartupMessage(paste0("Template ", "v.", xsec_version))
+packageStartupMessage("==============================================================")
+
+
+
+## Check package versions -----------------------------------------------
+writeLines("\nChecking Package Versions ...")
+
+tryCatch(
+  {
+    ebcore::update_packages(xsec_version)
+  },
+  error = function(e) {}
+)
+
+## Load packages and options ---------------------------------------
+suppressPackageStartupMessages(library(eble, quietly = TRUE))
+suppressPackageStartupMessages(library(dplyr, quietly = TRUE))
+suppressWarnings(suppressPackageStartupMessages(library(XSEXCELR)))
+suppressPackageStartupMessages(library(methods, quietly = TRUE))
+suppressPackageStartupMessages(library(lubridate, quietly = TRUE))
+
+options(
+  error = XSEXCELR:::xsec_error_function,
+  verbose_xsec = TRUE,
+  datatable.old.fread.datetime.character = TRUE
+)
+
+
+
+
+
+## Get name of working directory --------------------------------------------
+spec_dir <- XSEXCELR:::get_spec_dir(cmdarg = commandArgs())
+decomp_choice <- commandArgs()[7]
+bayes_model <- commandArgs()[9]
+access_key <- commandArgs()[10]
+secret_access_key <- commandArgs()[11]
+if (decomp_choice == "" || is.na(decomp_choice)) {
+  decomp_choice <- NA
+}
+
+## Log warnings---------------------------------------------------------------
+warning_file <- file(sprintf("%s/RScriptErrors.log", spec_dir), open = "wt")
+
+sink(warning_file, type = "message")
+
+if (file.exists(sprintf("%s/Done.csv", spec_dir)) && interactive()) {
+  # Normally deleted by xsec tool to signal when it's safe to save output
+  file.remove(sprintf("%s/Done.csv", spec_dir))
+}
+
+
+if (is.na(bayes_model)) {
+  bayes_model <- FALSE
+} else if (bayes_model == "True") {
+  bayes_model <- TRUE
+} else {
+  bayes_model <- FALSE
+}
+
+
+if (!is.na(decomp_choice)) {
+  run_decomp <- TRUE
+} else {
+  run_decomp <- FALSE
+}
+
+## Estimate model using spec stored in spec_dir -----------------------------
+if (bayes_model) {
+  aws_credentials(access_key, secret_access_key)
+  MODEL <- bayes_estimate(
+    spec_dir = spec_dir,
+    save_flag = TRUE,
+    log = FALSE
+  )
+} else {
+  MODEL <- XSEXCELR:::wextimate_decomp(
+    spec_dir = spec_dir,
+    save_flag = TRUE,
+    decomp_choice = "",
+    run_decomp = run_decomp
+  )
+}
+
+
+
+### Run custom script
+spec2 <- XSEXCELR:::.importDecompChoice(spec_dir = spec_dir)
+
+# Check if there is a "Custom Script" setting in the spec2 data frame
+if (any(spec2$Setting == "Custom Script")) {
+  # Retrieve the script location specified under "Custom Script"
+  script_loc <- spec2$Value[spec2$Setting == "Custom Script"]
+
+  # Validate that the script location is not NA and is a non-empty string
+  if (!is.na(script_loc) && nzchar(script_loc)) {
+    # Split the script location into the file path and any arguments
+    script_parts <- trimws(strsplit(script_loc, "--")[[1]])
+    script_path <- normalizePath(script_parts[1])
+
+    # Combine arguments if they exist
+    script_args <- if (length(script_parts) > 1) {
+      paste(shQuote(script_parts[-1]), collapse = " ")
+    } else {
+      ""
+    }
+
+    # Check if the script file exists at the specified path
+    if (file.exists(script_path)) {
+      writeLines("Running Custom R-Script...")
+
+      # Construct the command to run the R script with arguments
+      r_executable <- normalizePath(file.path(R.home("bin"), "Rscript.exe"))
+      cmd <- paste(shQuote(r_executable), shQuote(script_path), script_args)
+
+      # Execute the command
+      system(cmd)
+    } else {
+      stop("The specified Custom R script could not be found. If you are using custom arguments, please separate them with two hyphens, i.e. myScript.R --Arg1 --Arg2.")
+    }
+  }
+}
+
+
+## End message --------------------------------------------------------------
+XSEXCELR:::xsec_end_message()
+```
+
+## La herramienta transforma variables a partir de la sintaxis R que el usuario ha escrito
+
+```{r}
+#| label: multiple-trans
+movav(adstock(dim_ret(tv_region1,160,rescale=FALSE),0.3,normalize=TRUE))
+```
+
+## Los rendimientos decrecientes son una transformación frecuente en publicidad...
+
+$$
+x' = \frac{x}{x + b}
+$$
+
+- $x$ es la variable explicativa original
+- $b\in \mathbb{R}$ es un parámetro que hay que estimar
+
+## ...que visualmente se traducen en esto
+
+```{r}
+#| label: sim-dimret
+#| echo: false
+#| eval: true
+
+set.seed(114)
+nobs <- 200
+fechas_con_publi <- 75
+asymt <- 4
+b1 <- 60
+intercept <- 100
+
+
+data <- data.frame(
+  fecha = 1:nobs,
+  ruido = rnorm(nobs, 0, 1),
+  x = numeric(nobs)
+)
+
+data$x[sample(1:nobs, fechas_con_publi, replace = FALSE)] <- 
+  rlnorm(fechas_con_publi)
+
+data$xd <- data$x / (data$x + asymt)
+data$y <- intercept + b1 * data$xd + data$ruido
+
+mod_dimret <- lm(y ~ xd, data = data)
+mod_lineal <- lm(y ~ x, data = data)
+
+data$aportes_lineales <- mod_lineal$coefficients["x"] * data$x
+data$aportes_dimret <- mod_dimret$coefficients["xd"] * data$xd
+
+ggplot(data) + 
+  geom_point(
+    aes(x = x, y = aportes_lineales), 
+    shape = 21, col = "#800080", fill = "yellow", size = 2
+    ) + 
+  geom_point(
+    aes(x = x, y = aportes_dimret), 
+    col = "#800080", size = 2
+  ) + 
+  labs(x = "Inversión", y = "Contribución" ,
+       title = "Comportamiento de los rendimientos decrecientes")
+
+```
+
+## En una de nuestras librerías tenemos transformaciones como estas a mano
+
+```{r}
+#| label: dim-ret
+#| echo: true
+#| eval: true
+eble::dim_ret
+```
+
+## El efecto ad-stock simula el recuerdo publicitario
+
+```{r}
+#| label: sim-adstock
+#| eval: true
+#| echo: false
+
+efectos <- c(0.2, 0.4, 0.8)
+
+l_adstocks <- lapply(efectos, function(ads) {
+  eble::adstock(data$xd, p = ads)  
+})
+
+new_cols <- paste0("xd_ads", as.character(efectos * 100))
+
+data[, new_cols] <- l_adstocks 
+
+data |> 
+  select(fecha, starts_with("xd")) |> 
+  pivot_longer(-fecha) |> 
+  ggplot() + 
+  geom_line(aes(x = fecha, y = value), linewidth = 1, col = "#800080") + 
+  facet_grid(name ~ .) + 
+  labs(
+    x = "Tiempo", y = "Métrica", 
+    title = "El efecto ad-stock extiende el valor de la métrica hacia adelante", 
+    subtitle = "La idea es simular un recuerdo"
+  )
+```
+
+## Para este efecto también tenemos función en la librería eble
 
 ```{r}
 #| label: adstock
-adstock <- function (x, p, normalize = TRUE, reverse = FALSE) 
-{
-    if (length(p) > 1) {
-        stop("Input p to adstock must have a length of 1.")
-    }
-    if (p < 0 | p >= 1) {
-        stop("Input p to adstock must be in [0, 1)")
-    }
-    if (class(x) == "factor") {
-        warning("factor supplied to adstock function")
-        x = as.character(x)
-    }
-    x[is.na(x)] = 0
-    if (reverse == FALSE) {
-        if (normalize) {
-            x = x * (1 - p)
-        }
-        x = stats::filter(x, p, method = "recursive")
-        return(as.numeric(x))
-    }
-    else {
-        x = rev(adstock(rev(x), p, normalize))
-        return(as.numeric(x))
-    }
-}
+#| echo: true
+#| eval: true
+
+eble::adstock
 ```
-- Script inst/run_models
 
 ## Librerías en ebverse
+
+## Unos comentarios
+
+::: {.incremental}
+
+- Casi todas las librerías las usamos como backends de las interfaces en Excel
+- Algunas como **eble** las usamos para procesamiento de datos directamente con código
+  + Pero pocas
+  
+:::
 
 ## Qué hacemos mal
 
 - tests (algo de Venk)
 - git/github
+
+## Alojamos todo en GitHub, pero nos cuesta seguir nuestras propias pautas {.smaller}
+
+![](img/pull-request.PNG)
+
 
 # Shiny
 

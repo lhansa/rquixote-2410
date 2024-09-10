@@ -36,16 +36,16 @@ theme_set(theme_bw())
 
 # Contexto
 
-## Si inviertes 10 millones de publicidad, ¿de qué te sirve?
+## Si inviertes 10 millones en publicidad, ¿de qué te sirve?
 
 - Empresa _A_ invierte dinero en publicidad. 
-    - Ve a ojo si las ventas suben o bajan un poco después. 
+    - Controla a ojo si las ventas suben o bajan un poco después. 
 - Empresa _A_ quiere saber **cuántas** ventas ha conseguido gracias a la publicidad.
 - Ebiquity le da una aproximación que obtiene con modelos estadísticos.
 
-## Esta charla no va de econometría
+## Observación: esta charla no va de econometría
 
-Te contaré el papel de R en ese tipo de proyectos que hacemos.
+Lo que voy a hacer es contarte el papel de R en ese tipo de proyectos que hacemos.
 
 ## ¿Quién hace los modelos? El consultor _B_
 
@@ -55,6 +55,8 @@ Te contaré el papel de R en ese tipo de proyectos que hacemos.
 - El consultor _B_ puede saber programar
 
 Pero no se dedica a automatizar tareas ni a procesar ficheros complejos.
+
+## De eso a lo que no se dedica el consultor _B_ es de lo que te voy a hablar
 
 ## Las técnicas estadísticas son casi siempre las mismas de proyecto a proyecto
 
@@ -432,7 +434,40 @@ data |>
 eble::adstock
 ```
 
-## Librerías en ebverse
+## Otra librería tiene wrappers de funciones más típicas
+
+```{r}
+#| label: safe-left-join
+#| echo: true
+#| eval: true
+
+ebility::safe_left_join
+```
+
+## Súper cómodo para intercambiar R y Excel
+
+```{r}
+#| label: clipboard
+#| echo: true
+#| eval: true
+
+ebility::clipboard
+```
+
+
+
+## Librerías en ebverse {.smaller}
+
+- **eble**
+- **ebility**
+- **XSEXCELR.** Algoritmos de modelización.
+- **debcomp.** Cálculo de contribuciones en modelos multiplicativos.
+- **ebjobs.** Automatización de procesos de la herramienta de modelización.
+- **ebcore.** Operaciones tuneadas de R.
+- **ebdb.** Lectura de datos de distintas fuentes.
+- **mediaconsolidator.** Procesamiento de datos de inversión en publicidad.
+- **roicalculator.** Cómputo de retorno de la inversión publicitaria, a partir de las contribuciones de los modelos de **XSEXCELR** y **debcomp** y de lo procesado por **mediaconsolidator**.
+
 
 ## Unos comentarios
 
@@ -446,8 +481,41 @@ eble::adstock
 
 ## Qué hacemos mal
 
-- tests (algo de Venk)
-- git/github
+- Tests 
+- Git / GitHub
+
+## Hacemos muy pocos tests
+
+![](img/tests-rodolfo.PNG)
+
+## En un test realizas operaciones cuyo resultado conoces
+
+Cada vez que editas tu librería, ejecutas todos los tests para garantizar que lo nuevo no rompe lo que ya funcionaba
+
+```{r}
+#| label: ejemplo-test
+# Load the testthat package and the package that contains the function
+library(testthat)
+library(rodolfo)
+
+# Create a test block
+test_that("apply_adstock works correctly", {
+
+
+  # Test the output of the function with the example data
+  m_adstock <- apply_adstock(loaded_excel_test,
+                             c(target_name, variables_in_model))
+
+
+  expect_type(m_adstock, "double")
+  expect_equal(ncol(m_adstock), length(variables_in_model)+1)
+
+  expect_equal(m_adstock, m_adstock_test)
+
+
+})
+```
+
 
 ## Alojamos todo en GitHub, pero nos cuesta seguir nuestras propias pautas {.smaller}
 
@@ -456,12 +524,26 @@ eble::adstock
 
 # Shiny
 
-## Excel es una herramienta que te pone muy fácil hacer las cosas mal y como te dé la gana
+## Nos da pereza infinita meter cambios en las plantillas de Excel. 
 
-- ampliación
-- estandarización
+Shiny es nuestra herramienta para ampliar funcionalidades
 
-## golem
+## Excel carga las Shiny Apps con lo que hemos visto sobre `Rscript.exe`
+
+<!-- TODO Código de carga de un shiny app-->
+ 
+
+## Shiny apps como librerías de R
+
+Todas nuestras apps siguen el marco _golem_ (**más o menos**).
+
+```{r}
+#| label: result-explorer-schema
+#| echo: false
+#| eval: true
+fs::dir_tree("C:/Users/Leonardo.Hansa/Documents/tools/rosalind")
+```
+
 
 ## Qué hacemos mal
 

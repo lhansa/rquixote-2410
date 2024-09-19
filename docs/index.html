@@ -404,11 +404,20 @@ Leonardo Hansa - Ebiquity
 
   <p class="date">3/10/2024</p>
 </section>
-<section id="una-historia-antes" class="title-slide slide level1 unnumbered unlisted center">
-<h1>Una historia antes</h1>
+<section>
+<section id="quién-toma-café-en-casa" class="title-slide slide level1 center">
+<h1>¿Quién toma café en casa?</h1>
 
 </section>
-
+<section id="qué-cafetera-prefieres" class="slide level2">
+<h2>¿Qué cafetera prefieres?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="img/cafetera-italiana.png"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="img/nespresso.png"></p>
+</div></div>
+</section></section>
 <section>
 <section id="contexto" class="title-slide slide level1 center">
 <h1>Contexto</h1>
@@ -456,8 +465,8 @@ Leonardo Hansa - Ebiquity
 <h2>Las tareas repetitivas se desarrollan con herramientas internas</h2>
 <p>El ecosistema de estas herramientas es lo que te voy a contar ahora.</p>
 </section></section>
-<section id="toc" class="title-slide slide level1 center">
-<h1>TOC</h1>
+<section id="qué-te-voy-a-contar" class="title-slide slide level1 center">
+<h1>Qué te voy a contar</h1>
 <ul>
 <li>Planteamiento del ecosistema <code>ebverse</code></li>
 <li>Detalles del ecosistema <code>ebverse</code></li>
@@ -479,96 +488,42 @@ Leonardo Hansa - Ebiquity
 <h2>En Excel especifican todo lo que R necesita saber</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 70%">
+<col style="width: 91%">
 <col style="width: 8%">
-<col style="width: 10%">
-<col style="width: 10%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Variable</th>
-<th style="text-align: center;">CrossSection</th>
-<th style="text-align: center;">Decomp Interval</th>
-<th style="text-align: center;">Decomp Group</th>
+<th style="text-align: center;">Extra</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>INTERCEPT</td>
-<td style="text-align: center;">CrossSection</td>
-<td style="text-align: center;">10</td>
-<td style="text-align: center;">1.Base</td>
-</tr>
-<tr class="even">
-<td>log(cci)-log(min(cci,na.rm=TRUE))</td>
-<td style="text-align: center;">SystemNumber</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">2.Market</td>
-</tr>
-<tr class="odd">
-<td>gmpc_giveaway_alt</td>
-<td style="text-align: center;">CrossSection</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">3.Promo</td>
-</tr>
-<tr class="even">
-<td>movav(adstock(dimret(.TV.,160,rescale=FALSE),0.3,normalize=TRUE),1)</td>
-<td style="text-align: center;">CrossSection</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">4.TV</td>
-</tr>
-<tr class="odd">
-<td>adstock(dimret(m_drms_vd_spnd,10000,rescale=FALSE),0.3,normalize=TRUE)</td>
-<td style="text-align: center;">Region</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">4.TV</td>
-</tr>
-<tr class="even">
-<td>adstock(dimret(m_drms_tvspnsrshp_tvrs,170,rescale=FALSE),0.3,normalize=TRUE)</td>
-<td style="text-align: center;">Region</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">4.TV</td>
-</tr>
-<tr class="odd">
-<td>adstock(m_drms_rd_spnd,0.3)</td>
-<td style="text-align: center;">Region</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">5.Radio</td>
-</tr>
-<tr class="even">
-<td>adstock(m_drms_oh_spnd,0.8)</td>
-<td style="text-align: center;">SystemNumber</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">6.Other Media</td>
-</tr>
-<tr class="odd">
-<td>adstock(.Bensons_TV.,0.7,normalize=TRUE)</td>
-<td style="text-align: center;">CrossSection</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">1.Base</td>
-</tr>
-<tr class="even">
-<td>lag(bh_xmas, 1)</td>
-<td style="text-align: center;">CrossSection</td>
-<td style="text-align: center;">10</td>
-<td style="text-align: center;">2.Market</td>
-</tr>
-<tr class="odd">
-<td>bh_xmas</td>
-<td style="text-align: center;">CrossSection</td>
-<td style="text-align: center;">10</td>
-<td style="text-align: center;">2.Market</td>
-</tr>
-<tr class="even">
-<td>(OBS == “2015-12-14”)</td>
-<td style="text-align: center;">CrossSection</td>
-<td style="text-align: center;">10</td>
-<td style="text-align: center;">1.Base</td>
-</tr>
-<tr class="odd">
-<td>…</td>
+<td><code>log(cci)-log(min(cci,na.rm=TRUE))</code></td>
 <td style="text-align: center;">…</td>
+</tr>
+<tr class="even">
+<td><code>gmpc_giveaway_alt</code></td>
 <td style="text-align: center;">…</td>
+</tr>
+<tr class="odd">
+<td><code>movav(adstock(dimret(.TV.,160,rescale=FALSE),0.3,normalize=TRUE),1)</code></td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="even">
+<td><code>adstock(m_drms_rd_spnd,0.3)</code></td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="odd">
+<td><code>lag(bh_xmas, 1)</code></td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="even">
+<td><code>(OBS == "2015-12-14")</code></td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="odd">
+<td><code>...</code></td>
 <td style="text-align: center;">…</td>
 </tr>
 </tbody>
@@ -631,6 +586,9 @@ Leonardo Hansa - Ebiquity
 <section id="ebverse" class="title-slide slide level1 center">
 <h1><code>ebverse</code></h1>
 
+</section>
+<section id="quién-ha-creado-alguna-librería-de-r" class="slide level2">
+<h2>¿Quién ha creado alguna librería de R?</h2>
 </section>
 <section id="los-proyectos-de-modelización-giran-en-torno-a-la-cross-sectional-tool" class="slide level2">
 <h2>Los proyectos de modelización giran en torno a la <em>Cross Sectional Tool…</em></h2>
@@ -830,8 +788,8 @@ x' = \frac{x}{x + b}
 <h2>…que visualmente se traducen en esto</h2>
 
 <img data-src="index_files/figure-revealjs/sim-dimret-1.png" width="960" class="r-stretch"></section>
-<section id="en-una-de-nuestras-librerías-tenemos-transformaciones-como-estas-a-mano" class="slide level2">
-<h2>En una de nuestras librerías tenemos transformaciones como estas a mano</h2>
+<section id="en-una-de-nuestras-librerías-tenemos-transformaciones-como-estas" class="slide level2">
+<h2>En una de nuestras librerías tenemos transformaciones como estas</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a>eble<span class="sc">::</span>dim_ret</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -909,7 +867,7 @@ x' = \frac{x}{x + b}
     }
     return(y)
 }
-&lt;bytecode: 0x00000240bb964220&gt;
+&lt;bytecode: 0x0000027045266e28&gt;
 &lt;environment: namespace:eble&gt;</code></pre>
 </div>
 </div>
@@ -948,7 +906,7 @@ x' = \frac{x}{x + b}
         return(as.numeric(x))
     }
 }
-&lt;bytecode: 0x00000240bc0541e8&gt;
+&lt;bytecode: 0x0000027045964680&gt;
 &lt;environment: namespace:eble&gt;</code></pre>
 </div>
 </div>
@@ -974,7 +932,7 @@ x' = \frac{x}{x + b}
     }
     x %&gt;% select(-..check..)
 }
-&lt;bytecode: 0x00000240bba925f8&gt;
+&lt;bytecode: 0x000002704539b120&gt;
 &lt;environment: namespace:ebility&gt;</code></pre>
 </div>
 </div>
@@ -997,7 +955,7 @@ x' = \frac{x}{x + b}
             qmethod = "double", row.names = FALSE, ...)
     }
 }
-&lt;bytecode: 0x00000240b962b098&gt;
+&lt;bytecode: 0x0000027042818880&gt;
 &lt;environment: namespace:ebility&gt;</code></pre>
 </div>
 </div>
@@ -1074,6 +1032,9 @@ x' = \frac{x}{x + b}
 <h1>Shiny</h1>
 
 </section>
+<section id="quién-ha-hecho-un-shiny-alguna-vez" class="slide level2">
+<h2>¿Quién ha hecho un shiny alguna vez?</h2>
+</section>
 <section id="nos-da-pereza-infinita-meter-cambios-en-las-plantillas-de-excel." class="slide level2">
 <h2>Nos da pereza infinita meter cambios en las plantillas de Excel.</h2>
 <p>Shiny es nuestra herramienta para ampliar funcionalidades</p>
@@ -1123,7 +1084,7 @@ x' = \frac{x}{x + b}
 </section>
 <section id="shiny-apps-como-librerías-de-r" class="slide level2">
 <h2>Shiny apps como librerías de R</h2>
-<p>Todas nuestras apps siguen el marco <em>golem</em> (<strong>más o menos</strong>).</p>
+<p>Todas nuestras apps se inspiran en el marco <em>golem</em> (<strong>más o menos</strong>).</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>C:/Users/Leonardo.Hansa/Documents/tools/rosalind
@@ -1237,7 +1198,7 @@ x' = \frac{x}{x + b}
 <h2>Qué hacemos mal</h2>
 <ul>
 <li>renv</li>
-<li>módulos (resultsexplorer)</li>
+<li>Shiny modules</li>
 </ul>
 </section>
 <section id="cada-proyecto-r-es-de-su-padre-y-de-su-madre" class="slide level2">

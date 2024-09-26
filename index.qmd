@@ -29,6 +29,8 @@ library(tidyr)
 
 theme_set(theme_bw())
 
+main_color <- "#001c54"
+
 ```
 
 ## ¿Qué cafetera prefieres?
@@ -400,11 +402,11 @@ data$aportes_dimret <- mod_dimret$coefficients["xd"] * data$xd
 ggplot(data) + 
   geom_point(
     aes(x = x, y = aportes_lineales), 
-    shape = 21, col = "#800080", fill = "yellow", size = 2
+    shape = 21, col = main_color, fill = "yellow", size = 2
     ) + 
   geom_point(
     aes(x = x, y = aportes_dimret), 
-    col = "#800080", size = 2
+    col = main_color, size = 2
   ) + 
   labs(x = "Inversión", y = "Contribución" ,
        title = "Comportamiento de los rendimientos decrecientes")
@@ -441,7 +443,7 @@ data |>
   select(fecha, starts_with("xd")) |> 
   pivot_longer(-fecha) |> 
   ggplot() + 
-  geom_line(aes(x = fecha, y = value), linewidth = 1, col = "#800080") + 
+  geom_line(aes(x = fecha, y = value), linewidth = 1, col = main_color) + 
   facet_grid(name ~ .) + 
   labs(
     x = "Tiempo", y = "Métrica", 
@@ -482,17 +484,26 @@ ebility::clipboard
 
 
 
-## Librerías en ebverse {.smaller}
+## Librerías en ebverse 
 
+:::: {.columns}
+
+::: {.column width="50%"}
 - **eble**
 - **ebility**
-- **XSEXCELR.** Algoritmos de modelización.
-- **debcomp.** Cálculo de contribuciones en modelos multiplicativos.
-- **ebjobs.** Automatización de procesos de la herramienta de modelización.
-- **ebcore.** Operaciones tuneadas de R.
-- **ebdb.** Lectura de datos de distintas fuentes.
-- **mediaconsolidator.** Procesamiento de datos de inversión en publicidad.
-- **roicalculator.** Cómputo de retorno de la inversión publicitaria, a partir de las contribuciones de los modelos de **XSEXCELR** y **debcomp** y de lo procesado por **mediaconsolidator**.
+- **XSEXCELR** 
+- **debcomp** 
+- **ebjobs** 
+:::
+
+::: {.column width="50%"}
+- **ebcore** 
+- **ebdb** 
+- **mediaconsolidator** 
+- **roicalculator** 
+:::
+
+::::
 
 
 ## Unos comentarios
@@ -514,7 +525,7 @@ ebility::clipboard
 
 ![](img/tests-rodolfo.PNG)
 
-## En un test realizas operaciones cuyo resultado conoces
+## En un test realizas operaciones cuyo resultado conoces {.smaller}
 
 Cada vez que editas tu librería, ejecutas todos los tests para garantizar que lo nuevo no rompe lo que ya funcionaba
 
@@ -617,6 +628,22 @@ fs::dir_tree("C:/Users/Leonardo.Hansa/Documents/tools/rosalind")
 ## ¿Qué es una librería?
 
 ![](img/library-folders.PNG)
+
+## Ejemplo 1. Shiny Forecast
+
+![](img/eg_forecast.png)
+
+## Ejemplo 2. Chat Generator
+
+![](img/eg_chart_generator.png)
+
+## Ejemplo 3. Algoritmo genético
+
+![](img/eg_ga.png)
+
+## Ejemplo 4. STL
+
+![](img/eg_stl.png)
 
 ## Qué hacemos mal
 

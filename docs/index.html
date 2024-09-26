@@ -867,7 +867,7 @@ x' = \frac{x}{x + b}
     }
     return(y)
 }
-&lt;bytecode: 0x0000027045266e28&gt;
+&lt;bytecode: 0x000001f9a8496810&gt;
 &lt;environment: namespace:eble&gt;</code></pre>
 </div>
 </div>
@@ -906,7 +906,7 @@ x' = \frac{x}{x + b}
         return(as.numeric(x))
     }
 }
-&lt;bytecode: 0x0000027045964680&gt;
+&lt;bytecode: 0x000001f9a8b8d6f0&gt;
 &lt;environment: namespace:eble&gt;</code></pre>
 </div>
 </div>
@@ -932,7 +932,7 @@ x' = \frac{x}{x + b}
     }
     x %&gt;% select(-..check..)
 }
-&lt;bytecode: 0x000002704539b120&gt;
+&lt;bytecode: 0x000001f9a863da50&gt;
 &lt;environment: namespace:ebility&gt;</code></pre>
 </div>
 </div>
@@ -955,24 +955,30 @@ x' = \frac{x}{x + b}
             qmethod = "double", row.names = FALSE, ...)
     }
 }
-&lt;bytecode: 0x0000027042818880&gt;
+&lt;bytecode: 0x000001f9a62b2c38&gt;
 &lt;environment: namespace:ebility&gt;</code></pre>
 </div>
 </div>
 </section>
-<section id="librerías-en-ebverse" class="slide level2 smaller">
+<section id="librerías-en-ebverse" class="slide level2">
 <h2>Librerías en ebverse</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li><strong>eble</strong></li>
 <li><strong>ebility</strong></li>
-<li><strong>XSEXCELR.</strong> Algoritmos de modelización.</li>
-<li><strong>debcomp.</strong> Cálculo de contribuciones en modelos multiplicativos.</li>
-<li><strong>ebjobs.</strong> Automatización de procesos de la herramienta de modelización.</li>
-<li><strong>ebcore.</strong> Operaciones tuneadas de R.</li>
-<li><strong>ebdb.</strong> Lectura de datos de distintas fuentes.</li>
-<li><strong>mediaconsolidator.</strong> Procesamiento de datos de inversión en publicidad.</li>
-<li><strong>roicalculator.</strong> Cómputo de retorno de la inversión publicitaria, a partir de las contribuciones de los modelos de <strong>XSEXCELR</strong> y <strong>debcomp</strong> y de lo procesado por <strong>mediaconsolidator</strong>.</li>
+<li><strong>XSEXCELR</strong></li>
+<li><strong>debcomp</strong></li>
+<li><strong>ebjobs</strong></li>
 </ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><strong>ebcore</strong></li>
+<li><strong>ebdb</strong></li>
+<li><strong>mediaconsolidator</strong></li>
+<li><strong>roicalculator</strong></li>
+</ul>
+</div></div>
 </section>
 <section id="unos-comentarios" class="slide level2">
 <h2>Unos comentarios</h2>
@@ -997,7 +1003,7 @@ x' = \frac{x}{x + b}
 <h2>Hacemos muy pocos tests</h2>
 
 <img data-src="img/tests-rodolfo.PNG" class="r-stretch"></section>
-<section id="en-un-test-realizas-operaciones-cuyo-resultado-conoces" class="slide level2">
+<section id="en-un-test-realizas-operaciones-cuyo-resultado-conoces" class="slide level2 smaller">
 <h2>En un test realizas operaciones cuyo resultado conoces</h2>
 <p>Cada vez que editas tu librería, ejecutas todos los tests para garantizar que lo nuevo no rompe lo que ya funcionaba</p>
 <div class="cell">
@@ -1194,6 +1200,22 @@ x' = \frac{x}{x + b}
 <h2>¿Qué es una librería?</h2>
 
 <img data-src="img/library-folders.PNG" class="r-stretch"></section>
+<section id="ejemplo-1.-shiny-forecast" class="slide level2">
+<h2>Ejemplo 1. Shiny Forecast</h2>
+
+<img data-src="img/eg_forecast.png" class="r-stretch"></section>
+<section id="ejemplo-2.-chat-generator" class="slide level2">
+<h2>Ejemplo 2. Chat Generator</h2>
+
+<img data-src="img/eg_chart_generator.png" class="r-stretch"></section>
+<section id="ejemplo-3.-algoritmo-genético" class="slide level2">
+<h2>Ejemplo 3. Algoritmo genético</h2>
+
+<img data-src="img/eg_ga.png" class="r-stretch"></section>
+<section id="ejemplo-4.-stl" class="slide level2">
+<h2>Ejemplo 4. STL</h2>
+
+<img data-src="img/eg_stl.png" class="r-stretch"></section>
 <section id="qué-hacemos-mal-1" class="slide level2">
 <h2>Qué hacemos mal</h2>
 <ul>

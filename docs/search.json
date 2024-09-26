@@ -151,7 +151,7 @@
     "href": "index.html#en-una-de-nuestras-librerías-tenemos-transformaciones-como-estas",
     "title": "Este es el ecosistema R que uso en el trabajo",
     "section": "En una de nuestras librerías tenemos transformaciones como estas",
-    "text": "En una de nuestras librerías tenemos transformaciones como estas\n\neble::dim_ret\n\nfunction (x, ..., option = c(\"rect\", \"adbug\", \"hill\", \"atan\", \n    \"inversec\", \"asymmetrics\", \"asymptotic\"), rescale = FALSE) \n{\n    option = match.arg(option)\n    params = suppressWarnings(vapply(list(...), as.numeric, numeric(1L)))\n    if (suppressWarnings(any(is.na(params)))) {\n        if (list(...)[which(lapply(list(...), is.character) == \n            TRUE)][[1]] %in% c(\"rect\", \"adbug\", \"hill\", \"atan\", \n            \"inversec\", \"asymmetrics\", \"asymptotic\")) {\n            option = list(...)[which(lapply(list(...), is.character) == \n                TRUE)][[1]]\n            params = params[!is.na(params)]\n        }\n        else {\n            stop(\"check your dim_ret arguments! Specify the option argument, e.g. option = 'rect'\")\n        }\n    }\n    if (length(params) != (n &lt;- switch(option, rect = , atan = 1, \n        adbug = , hill = 2, inversec = 1, asymmetrics = 2, asymptotic = 1))) {\n        if (option %in% c(\"hill\", \"adbug\", \"asymmetrics\")) {\n            stop(\"s parameter value was not provided. Hill, adbug and asymmetrics functions need two parameter values.\")\n        }\n        if (length(params) == 2 & option %in% c(\"rect\")) {\n            stop(\"option value was not provided. s parameter applies only to hill, adbug and asymmetrics functions.\")\n        }\n        else {\n            stop(sprintf(\"incorrect number of parameters for option '%s' in dim ret: expected %i, but got %i\", \n                option, n, length(params)))\n        }\n    }\n    if (any(!is.finite(params))) {\n        stop(\"non-numeric parameter(s) in dim ret\")\n    }\n    if (class(x) == \"integer\" && class(params) == \"integer\") {\n        params = as.double(params)\n    }\n    ind = params == Inf\n    if (all(ind)) {\n        return(x)\n    }\n    if (any(params &lt; 0)) {\n        stop(\"Dimishing returns are not defined for negative values.\")\n    }\n    if (length(params) == 2) {\n        if (params[2] == 0) {\n            stop(\"Dimishing returns are not defined for zero s value.\")\n        }\n        if (max(x, params[1], na.rm = TRUE)^params[2] == Inf & \n            option == \"hill\") {\n            params[2] = 1023 * (log(2)/log(max(x, params[1], \n                na.rm = TRUE)))\n            stop(sprintf(\"the selected s parameter is causing overflow error. The maximum finite value is %s\", \n                round(params[2], 2)))\n        }\n        if (max(x, na.rm = TRUE)^params[2] == Inf & option == \n            \"adbug\") {\n            params[2] = 1023 * (log(2)/log(max(x, na.rm = TRUE)))\n            stop(sprintf(\"the selected s parameter is causing overflow error. The maximum finite value is %s\", \n                round(params[2], 2)))\n        }\n    }\n    y = switch(option, rect = x/(x + params[1]), adbug = x^params[2]/(x^params[2] + \n        params[1]), hill = x^params[2]/(x^params[2] + params[1]^params[2]), \n        atan = atan(x/params[1]), inversec = 1 - exp(-x/params[1]), \n        asymmetrics = 1/(1 + exp(-params[1] * (x - params[2]))), \n        asymptotic = 1 - exp(-x/params[1]))\n    if (rescale) {\n        y = y * params[1]\n    }\n    if (any(ind)) {\n        y[ind] = x[ind]\n    }\n    return(y)\n}\n&lt;bytecode: 0x0000027045266e28&gt;\n&lt;environment: namespace:eble&gt;"
+    "text": "En una de nuestras librerías tenemos transformaciones como estas\n\neble::dim_ret\n\nfunction (x, ..., option = c(\"rect\", \"adbug\", \"hill\", \"atan\", \n    \"inversec\", \"asymmetrics\", \"asymptotic\"), rescale = FALSE) \n{\n    option = match.arg(option)\n    params = suppressWarnings(vapply(list(...), as.numeric, numeric(1L)))\n    if (suppressWarnings(any(is.na(params)))) {\n        if (list(...)[which(lapply(list(...), is.character) == \n            TRUE)][[1]] %in% c(\"rect\", \"adbug\", \"hill\", \"atan\", \n            \"inversec\", \"asymmetrics\", \"asymptotic\")) {\n            option = list(...)[which(lapply(list(...), is.character) == \n                TRUE)][[1]]\n            params = params[!is.na(params)]\n        }\n        else {\n            stop(\"check your dim_ret arguments! Specify the option argument, e.g. option = 'rect'\")\n        }\n    }\n    if (length(params) != (n &lt;- switch(option, rect = , atan = 1, \n        adbug = , hill = 2, inversec = 1, asymmetrics = 2, asymptotic = 1))) {\n        if (option %in% c(\"hill\", \"adbug\", \"asymmetrics\")) {\n            stop(\"s parameter value was not provided. Hill, adbug and asymmetrics functions need two parameter values.\")\n        }\n        if (length(params) == 2 & option %in% c(\"rect\")) {\n            stop(\"option value was not provided. s parameter applies only to hill, adbug and asymmetrics functions.\")\n        }\n        else {\n            stop(sprintf(\"incorrect number of parameters for option '%s' in dim ret: expected %i, but got %i\", \n                option, n, length(params)))\n        }\n    }\n    if (any(!is.finite(params))) {\n        stop(\"non-numeric parameter(s) in dim ret\")\n    }\n    if (class(x) == \"integer\" && class(params) == \"integer\") {\n        params = as.double(params)\n    }\n    ind = params == Inf\n    if (all(ind)) {\n        return(x)\n    }\n    if (any(params &lt; 0)) {\n        stop(\"Dimishing returns are not defined for negative values.\")\n    }\n    if (length(params) == 2) {\n        if (params[2] == 0) {\n            stop(\"Dimishing returns are not defined for zero s value.\")\n        }\n        if (max(x, params[1], na.rm = TRUE)^params[2] == Inf & \n            option == \"hill\") {\n            params[2] = 1023 * (log(2)/log(max(x, params[1], \n                na.rm = TRUE)))\n            stop(sprintf(\"the selected s parameter is causing overflow error. The maximum finite value is %s\", \n                round(params[2], 2)))\n        }\n        if (max(x, na.rm = TRUE)^params[2] == Inf & option == \n            \"adbug\") {\n            params[2] = 1023 * (log(2)/log(max(x, na.rm = TRUE)))\n            stop(sprintf(\"the selected s parameter is causing overflow error. The maximum finite value is %s\", \n                round(params[2], 2)))\n        }\n    }\n    y = switch(option, rect = x/(x + params[1]), adbug = x^params[2]/(x^params[2] + \n        params[1]), hill = x^params[2]/(x^params[2] + params[1]^params[2]), \n        atan = atan(x/params[1]), inversec = 1 - exp(-x/params[1]), \n        asymmetrics = 1/(1 + exp(-params[1] * (x - params[2]))), \n        asymptotic = 1 - exp(-x/params[1]))\n    if (rescale) {\n        y = y * params[1]\n    }\n    if (any(ind)) {\n        y[ind] = x[ind]\n    }\n    return(y)\n}\n&lt;bytecode: 0x000001f9a8496810&gt;\n&lt;environment: namespace:eble&gt;"
   },
   {
     "objectID": "index.html#el-efecto-ad-stock-simula-el-recuerdo-publicitario",
@@ -165,28 +165,28 @@
     "href": "index.html#para-este-efecto-también-tenemos-función-en-la-librería-eble",
     "title": "Este es el ecosistema R que uso en el trabajo",
     "section": "Para este efecto también tenemos función en la librería eble",
-    "text": "Para este efecto también tenemos función en la librería eble\n\neble::adstock\n\nfunction (x, p, normalize = TRUE, reverse = FALSE) \n{\n    if (length(p) &gt; 1) {\n        stop(\"Input p to adstock must have a length of 1.\")\n    }\n    if (p &lt; 0 | p &gt;= 1) {\n        stop(\"Input p to adstock must be in [0, 1)\")\n    }\n    if (class(x) == \"factor\") {\n        warning(\"factor supplied to adstock function\")\n        x = as.character(x)\n    }\n    x[is.na(x)] = 0\n    if (reverse == FALSE) {\n        if (normalize) {\n            x = x * (1 - p)\n        }\n        x = stats::filter(x, p, method = \"recursive\")\n        return(as.numeric(x))\n    }\n    else {\n        x = rev(adstock(rev(x), p, normalize))\n        return(as.numeric(x))\n    }\n}\n&lt;bytecode: 0x0000027045964680&gt;\n&lt;environment: namespace:eble&gt;"
+    "text": "Para este efecto también tenemos función en la librería eble\n\neble::adstock\n\nfunction (x, p, normalize = TRUE, reverse = FALSE) \n{\n    if (length(p) &gt; 1) {\n        stop(\"Input p to adstock must have a length of 1.\")\n    }\n    if (p &lt; 0 | p &gt;= 1) {\n        stop(\"Input p to adstock must be in [0, 1)\")\n    }\n    if (class(x) == \"factor\") {\n        warning(\"factor supplied to adstock function\")\n        x = as.character(x)\n    }\n    x[is.na(x)] = 0\n    if (reverse == FALSE) {\n        if (normalize) {\n            x = x * (1 - p)\n        }\n        x = stats::filter(x, p, method = \"recursive\")\n        return(as.numeric(x))\n    }\n    else {\n        x = rev(adstock(rev(x), p, normalize))\n        return(as.numeric(x))\n    }\n}\n&lt;bytecode: 0x000001f9a8b8d6f0&gt;\n&lt;environment: namespace:eble&gt;"
   },
   {
     "objectID": "index.html#otra-librería-tiene-wrappers-de-funciones-más-típicas",
     "href": "index.html#otra-librería-tiene-wrappers-de-funciones-más-típicas",
     "title": "Este es el ecosistema R que uso en el trabajo",
     "section": "Otra librería tiene wrappers de funciones más típicas",
-    "text": "Otra librería tiene wrappers de funciones más típicas\n\nebility::safe_left_join\n\nfunction (x, y, by = NULL) \n{\n    n_row = nrow(x)\n    x = left_join(x, y %&gt;% mutate(..check.. = TRUE), by)\n    if (nrow(x) &gt; n_row) {\n        stop(\"Duplicated rows!\")\n    }\n    if (any(ind &lt;- is.na(x[[\"..check..\"]]))) {\n        ind = sample(which(ind), min(10, sum(ind)))\n        print(unique(x[ind, if (is.null(by)) \n            intersect(names(x), names(y))\n        else names(nameifnot((by))), drop = FALSE]))\n        stop(\"Failed to match one or more rows in x.\")\n    }\n    x %&gt;% select(-..check..)\n}\n&lt;bytecode: 0x000002704539b120&gt;\n&lt;environment: namespace:ebility&gt;"
+    "text": "Otra librería tiene wrappers de funciones más típicas\n\nebility::safe_left_join\n\nfunction (x, y, by = NULL) \n{\n    n_row = nrow(x)\n    x = left_join(x, y %&gt;% mutate(..check.. = TRUE), by)\n    if (nrow(x) &gt; n_row) {\n        stop(\"Duplicated rows!\")\n    }\n    if (any(ind &lt;- is.na(x[[\"..check..\"]]))) {\n        ind = sample(which(ind), min(10, sum(ind)))\n        print(unique(x[ind, if (is.null(by)) \n            intersect(names(x), names(y))\n        else names(nameifnot((by))), drop = FALSE]))\n        stop(\"Failed to match one or more rows in x.\")\n    }\n    x %&gt;% select(-..check..)\n}\n&lt;bytecode: 0x000001f9a863da50&gt;\n&lt;environment: namespace:ebility&gt;"
   },
   {
     "objectID": "index.html#súper-cómodo-para-intercambiar-r-y-excel",
     "href": "index.html#súper-cómodo-para-intercambiar-r-y-excel",
     "title": "Este es el ecosistema R que uso en el trabajo",
     "section": "Súper cómodo para intercambiar R y Excel",
-    "text": "Súper cómodo para intercambiar R y Excel\n\nebility::clipboard\n\nfunction (x = NULL, alloc = object.size(x), ...) \n{\n    if (is.null(x)) {\n        read.table(\"clipboard\", header = TRUE, sep = \"\\t\", ...)\n    }\n    else {\n        if (!is.numeric(alloc)) {\n            stop(\"alloc must be numeric.\")\n        }\n        write.table(x, sprintf(\"clipboard-%d\", alloc), sep = \"\\t\", \n            qmethod = \"double\", row.names = FALSE, ...)\n    }\n}\n&lt;bytecode: 0x0000027042818880&gt;\n&lt;environment: namespace:ebility&gt;"
+    "text": "Súper cómodo para intercambiar R y Excel\n\nebility::clipboard\n\nfunction (x = NULL, alloc = object.size(x), ...) \n{\n    if (is.null(x)) {\n        read.table(\"clipboard\", header = TRUE, sep = \"\\t\", ...)\n    }\n    else {\n        if (!is.numeric(alloc)) {\n            stop(\"alloc must be numeric.\")\n        }\n        write.table(x, sprintf(\"clipboard-%d\", alloc), sep = \"\\t\", \n            qmethod = \"double\", row.names = FALSE, ...)\n    }\n}\n&lt;bytecode: 0x000001f9a62b2c38&gt;\n&lt;environment: namespace:ebility&gt;"
   },
   {
     "objectID": "index.html#librerías-en-ebverse",
     "href": "index.html#librerías-en-ebverse",
     "title": "Este es el ecosistema R que uso en el trabajo",
     "section": "Librerías en ebverse",
-    "text": "Librerías en ebverse\n\neble\nebility\nXSEXCELR. Algoritmos de modelización.\ndebcomp. Cálculo de contribuciones en modelos multiplicativos.\nebjobs. Automatización de procesos de la herramienta de modelización.\nebcore. Operaciones tuneadas de R.\nebdb. Lectura de datos de distintas fuentes.\nmediaconsolidator. Procesamiento de datos de inversión en publicidad.\nroicalculator. Cómputo de retorno de la inversión publicitaria, a partir de las contribuciones de los modelos de XSEXCELR y debcomp y de lo procesado por mediaconsolidator."
+    "text": "Librerías en ebverse\n\n\n\neble\nebility\nXSEXCELR\ndebcomp\nebjobs\n\n\n\nebcore\nebdb\nmediaconsolidator\nroicalculator"
   },
   {
     "objectID": "index.html#unos-comentarios",
@@ -257,6 +257,34 @@
     "title": "Este es el ecosistema R que uso en el trabajo",
     "section": "¿Qué es una librería?",
     "text": "¿Qué es una librería?"
+  },
+  {
+    "objectID": "index.html#ejemplo-1.-shiny-forecast",
+    "href": "index.html#ejemplo-1.-shiny-forecast",
+    "title": "Este es el ecosistema R que uso en el trabajo",
+    "section": "Ejemplo 1. Shiny Forecast",
+    "text": "Ejemplo 1. Shiny Forecast"
+  },
+  {
+    "objectID": "index.html#ejemplo-2.-chat-generator",
+    "href": "index.html#ejemplo-2.-chat-generator",
+    "title": "Este es el ecosistema R que uso en el trabajo",
+    "section": "Ejemplo 2. Chat Generator",
+    "text": "Ejemplo 2. Chat Generator"
+  },
+  {
+    "objectID": "index.html#ejemplo-3.-algoritmo-genético",
+    "href": "index.html#ejemplo-3.-algoritmo-genético",
+    "title": "Este es el ecosistema R que uso en el trabajo",
+    "section": "Ejemplo 3. Algoritmo genético",
+    "text": "Ejemplo 3. Algoritmo genético"
+  },
+  {
+    "objectID": "index.html#ejemplo-4.-stl",
+    "href": "index.html#ejemplo-4.-stl",
+    "title": "Este es el ecosistema R que uso en el trabajo",
+    "section": "Ejemplo 4. STL",
+    "text": "Ejemplo 4. STL"
   },
   {
     "objectID": "index.html#qué-hacemos-mal-1",

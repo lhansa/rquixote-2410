@@ -2685,4 +2685,4 @@ mod_mediaplot_server <- function(id,
 
 ![](img/quarto.PNG)
 
-# leonardohansa.com {.unnumbered .unlisted}
+# leonardohansa.com/rquixote {.unnumbered .unlisted}

@@ -156,13 +156,30 @@ Y puedo utilizar sus elementos:
 
 # Me llamo Leonardo Hansa y tengo una cosa para ti
 
+<style>
+  h1, h2 {
+    color: #800080; 
+  }
+</style>
+
 ## Disculpa mis modales, que aún no me he presentado
 
+<style>
+  h1, h2 {
+    color: #800080; 
+  }
+</style>
 - No sé mucha estadística 
 - No soy buen programador
 - Me dedico a las cosas que los buenos estadísticos y programadores tienen que hacer pero no quieren
 
 ## Me gusta enseñar cómo con poquito se puede hacer mucho
+
+<style>
+  h1, h2 {
+    color: #800080; 
+  }
+</style>
 
 https://leonardohansa.com/rquixote
 
@@ -2686,3 +2703,9 @@ mod_mediaplot_server <- function(id,
 ![](img/quarto.PNG)
 
 # leonardohansa.com/rquixote {.unnumbered .unlisted}
+
+<style>
+  h1, h2 {
+    color: #800080; 
+  }
+</style>

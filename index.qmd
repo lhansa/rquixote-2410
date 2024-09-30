@@ -154,32 +154,16 @@ Y puedo utilizar sus elementos:
 ## Nuestro ecosistema consiste en varias librerías de R a las que Excel llama para cada tarea
 
 
-# Me llamo Leonardo Hansa y tengo una cosa para ti
+# Me llamo Leonardo Hansa y tengo una cosa para ti {.custom-title}
 
-<style>
-  h1, h2 {
-    color: #800080; 
-  }
-</style>
 
-## Disculpa mis modales, que aún no me he presentado
+## Me presento {.custom-title}
 
-<style>
-  h1, h2 {
-    color: #800080; 
-  }
-</style>
 - No sé mucha estadística 
 - No soy buen programador
 - Me dedico a las cosas que los buenos estadísticos y programadores tienen que hacer pero no quieren
 
-## Me gusta enseñar cómo con poquito se puede hacer mucho
-
-<style>
-  h1, h2 {
-    color: #800080; 
-  }
-</style>
+## Me gusta enseñar cómo con poquito se puede hacer mucho {.custom-title}
 
 https://leonardohansa.com/rquixote
 
@@ -2702,10 +2686,4 @@ mod_mediaplot_server <- function(id,
 
 ![](img/quarto.PNG)
 
-# leonardohansa.com/rquixote {.unnumbered .unlisted}
-
-<style>
-  h1, h2 {
-    color: #800080; 
-  }
-</style>
+# leonardohansa.com/rquixote {.unnumbered .unlisted .custom-title}
